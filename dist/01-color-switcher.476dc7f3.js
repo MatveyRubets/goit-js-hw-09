@@ -118,32 +118,33 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"js/01-color-switcher.js":[function(require,module,exports) {
-function getRandomHexColor() {
-  return "#".concat(Math.floor(Math.random() * 16777215).toString(16));
-}
-
-var refs = {
-  bodyRef: document.querySelector("body"),
-  startRef: document.querySelector("button[data-start]"),
-  stopRef: document.querySelector("button[data-stop]")
+const refs = {
+  startBtn: document.querySelector('button[data-start]'),
+  stopBtn: document.querySelector('button[data-stop]')
 };
-refs.startRef.addEventListener("click", handleClickChangeColor);
-refs.stopRef.addEventListener("click", handleStopChangeColor);
-var colorInterval = null;
 
-function handleClickChangeColor() {
-  refs.stopRef.removeAttribute("disabled");
-  refs.startRef.setAttribute("disabled", true);
-  colorInterval = setInterval(function () {
-    refs.bodyRef.style.backgroundColor = getRandomHexColor();
+function getRandomHexColor() {
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+}
+
+let timerId = null;
+
+function changeBgColor() {
+  timerId = setInterval(() => {
+    document.body.style.backgroundColor = getRandomHexColor();
   }, 1000);
+  refs.startBtn.setAttribute('disabled', 'true');
+  refs.stopBtn.removeAttribute('disabled', 'true');
 }
 
-function handleStopChangeColor() {
-  refs.startRef.removeAttribute("disabled");
-  refs.stopRef.setAttribute("disabled", true);
-  clearInterval(colorInterval);
+function stopInterval() {
+  clearInterval(timerId);
+  refs.startBtn.removeAttribute('disabled', 'true');
+  refs.stopBtn.setAttribute('disabled', 'true');
 }
+
+refs.startBtn.addEventListener('click', changeBgColor);
+refs.stopBtn.addEventListener('click', stopInterval);
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -172,7 +173,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62445" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58727" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
